@@ -8,6 +8,8 @@
 </head>
 <body>
     <button id="button">Get Text File</button>
+    <br></br>
+    <div id="text"></div>
 
     <script>
         //Create event listener
@@ -18,9 +20,28 @@
             //Create XHR Object
             var xhr = new XMLHttpRequest();
             //Open - type url/file async
-            xhr.open('GET', 'sample.txt', true);
+            xhr.open('GET', 'sample2.txt', true);
 
-            console.log('READYSTATE: ', xhr.readyState);
+            console.log('READYSTATE-server connection established: ', xhr.readyState); //READYSTATE: 1
+
+            //OPTIONAL - used for loaders
+            xhr.onprogress = function(){
+                console.log('READYSTATE-onprogress: ', xhr.readyState); //READYSTATE: 3
+            }
+
+            xhr.onerror = function(){
+                console.log("Request Error...");
+            }
+
+            xhr.onload = function(){
+                console.log('READYSTATE-onload: ', xhr.readyState); //READYSTATE: 4
+                if(this.status == 200){
+                    document.getElementById("text").innerHTML = this.responseText;
+                }else if(this.status == 404){
+                    document.getElementById("text").innerHTML = 'Not Found';
+                }      
+            }
+
 
             /**************************************************
             xhr.onload = function(){
@@ -29,6 +50,16 @@
                 }
             }
             **************************************************/
+
+            /****************************************************************
+            xhr.onload = function(){
+                console.log('READYSTATE: ', xhr.readyState); //READYSTATE: 4
+                if(this.status == 200){
+                    
+                    //console.log(this.responseText);
+                }
+            }
+            *****************************************************************/
 
             /**************************************************
             xhr.onreadystatechange = function(){
